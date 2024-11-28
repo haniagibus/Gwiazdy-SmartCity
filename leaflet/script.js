@@ -45,7 +45,7 @@ var overlayLayers = {
 
 var layerControl=L.control.layers(baseLayers, overlayLayers).addTo(map);
 fetch(
-    "/geojson-data/parks.geojson"
+    "/geojson-data/green-terrains.geojson"
 )
     .then(function (response) {
         return response.json();
