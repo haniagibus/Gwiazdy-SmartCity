@@ -22,12 +22,13 @@ var  waqiLayer  =  L.tileLayer(WAQI_URL,  {  attribution:  WAQI_ATTR  });
 // config map
 let config = {
     layers: [osmMap],
-    minZoom: 11,
+    minZoom: 8,
     maxZoom: 18,
 };
 
 // calling map
 const map = L.map("map", config).setView([lat, lng], zoom);
+L.Control.geocoder().addTo(map);
 
 var baseLayers = {
     "Map": osmMap
