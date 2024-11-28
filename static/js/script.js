@@ -48,6 +48,49 @@ function createMap() {
 
     layerControl.addOverlay(airPollutionMarkers, "Air Pollution");
 
+    fetch("../static/geojson-data/noise-pollution.geojson")
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            var noisePollution = L.geoJSON(data, {
+                style: function (feature) {
+                    return {
+                        color: feature.properties.stroke,
+                        weight: feature.properties['stroke-width'],
+                        opacity: feature.properties['stroke-opacity'],
+                        fillColor: feature.properties.fill,
+                        fillOpacity: feature.properties['fill-opacity']
+                    };
+                }
+            });
+            layerControl.addOverlay(noisePollution, "Noise level");
+            noisePollution.addTo(map);
+        });
+
+
+    fetch("../static/geojson-data/green-terrains.geojson")
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            var parkLayer = L.geoJSON(data, {
+                style: function (feature) {
+                    return {
+                        color: feature.properties.stroke,
+                        weight: feature.properties['stroke-width'],
+                        opacity: feature.properties['stroke-opacity'],
+                        fillColor: feature.properties.fill,
+                        fillOpacity: feature.properties['fill-opacity']
+                    };
+                }
+            }).bindPopup(function (layer) {
+                return layer.feature.properties.name;
+            });
+            layerControl.addOverlay(parkLayer, "Green Terrains");
+            parkLayer.addTo(map);
+        });
+
     return map;
 }
 
