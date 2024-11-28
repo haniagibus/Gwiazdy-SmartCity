@@ -18,6 +18,10 @@ function createMap() {
         layers: [osmMap],
         minZoom: 11,
         maxZoom: 18,
+        fullscreenControl: true,
+        fullscreenControlOptions: {
+            position: 'topleft'
+        }
     };
 
     // calling map
@@ -64,17 +68,15 @@ function createMap() {
                     };
                 }
             });
-            layerControl.addOverlay(noisePollution, "Noise level");
-            noisePollution.addTo(map);
+            layerControl.addOverlay(noisePollution, "Noise Pollution");
         });
-
 
     fetch("../static/geojson-data/green-terrains.geojson")
         .then(function (response) {
             return response.json();
         })
         .then(function (data) {
-            var parkLayer = L.geoJSON(data, {
+            var greenTerrains = L.geoJSON(data, {
                 style: function (feature) {
                     return {
                         color: feature.properties.stroke,
@@ -94,8 +96,7 @@ function createMap() {
                 }
             });
 
-            layerControl.addOverlay(parkLayer, "Green Terrains");
-            parkLayer.addTo(map);
+            layerControl.addOverlay(greenTerrains, "Green Terrains");
         });
 
     return map;
