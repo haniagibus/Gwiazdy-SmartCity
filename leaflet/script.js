@@ -10,16 +10,10 @@ const lat = 54.3520;
 const lng = 18.6463;
 
 const osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
-const cartoDB = '<a href="http://cartodb.com/attributions">CartoDB</a>';
 
 const osmUrl = "http://tile.openstreetmap.org/{z}/{x}/{y}.png";
 const osmAttrib = `&copy; ${osmLink} Contributors`;
-const landUrl =
-    "https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png";
-const cartoAttrib = `&copy; ${osmLink} Contributors & ${cartoDB}`;
-
 const osmMap = L.tileLayer(osmUrl, { attribution: osmAttrib });
-const landMap = L.tileLayer(landUrl, { attribution: cartoAttrib });
 
 var  WAQI_URL  =  "https://tiles.waqi.info/tiles/usepa-aqi/{z}/{x}/{y}.png?token=_TOKEN_ID_";
 var  WAQI_ATTR  =  'Air  Quality  Tiles  &copy;  <a  href="http://waqi.info">waqi.info</a>';
@@ -28,7 +22,7 @@ var  waqiLayer  =  L.tileLayer(WAQI_URL,  {  attribution:  WAQI_ATTR  });
 // config map
 let config = {
     layers: [osmMap],
-    minZoom: 7,
+    minZoom: 11,
     maxZoom: 18,
 };
 
@@ -63,4 +57,28 @@ fetch("/geojson-data/noise-pollution.geojson")
         });
         layerControl.addOverlay(noisePollution, "Noise level");
         noisePollution.addTo(map);
+    });
+
+
+fetch("/geojson-data/green-terrains.geojson")
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (data) {
+        var parkLayer = L.geoJSON(data, {
+            style: function (feature) {
+                return {
+                    color: feature.properties.stroke,
+                    weight: feature.properties['stroke-width'],
+                    opacity: feature.properties['stroke-opacity'],
+                    fillColor: feature.properties.fill,
+                    fillOpacity: feature.properties['fill-opacity']
+                };
+            }
+        }).bindPopup(function (layer) {
+            return layer.feature.properties.name;
+        });
+        layerControl.addOverlay(parkLayer, "Parks");
+        parkLayer.addTo(map);
+
     });
