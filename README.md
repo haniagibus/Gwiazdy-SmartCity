@@ -1,0 +1,1 @@
+# Gwiazdy-SmartCity
