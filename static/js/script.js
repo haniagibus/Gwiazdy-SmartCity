@@ -84,9 +84,16 @@ function createMap() {
                         fillOpacity: feature.properties['fill-opacity']
                     };
                 }
-            }).bindPopup(function (layer) {
-                return layer.feature.properties.name;
+            }).bindPopup(function(layer){
+                if (layer.feature.properties.name != null) {
+                    var media = layer.feature.properties.media
+                    image = "<img src='" + media + "' style=\"width:130px;height:70px;\">"
+                        + "<a target='_blank' href='" + media + "'></a>"
+
+                    return layer.feature.properties.name + '</br>' + image;
+                }
             });
+
             layerControl.addOverlay(parkLayer, "Green Terrains");
             parkLayer.addTo(map);
         });
