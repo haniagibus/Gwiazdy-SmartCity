@@ -1,22 +1,34 @@
 let allMarkers = {};
 
 function createMap() {
-    var OpenStreetMap_Mapnik = L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-            maxZoom: 19,
-            attribution:
-                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        }
-    );
+    // magnification with which the map will start
+    const zoom = 12;
+    // co-ordinates
+    const lat = 54.3520;
+    const lng = 18.6463;
 
-    let map = L.map(document.getElementById("leaflet-map"), {
-        attributionControl: false,
-        gestureHandling: true,
-        zoomSnap: 0.1,
-    })
-        .setView([54.372158, 18.638306], 12) // Gdańsk coordinates
-        .addLayer(OpenStreetMap_Mapnik);
+    const osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+
+    const osmUrl = "http://tile.openstreetmap.org/{z}/{x}/{y}.png";
+    const osmAttr = `&copy; ${osmLink} Contributors`;
+    const osmMap = L.tileLayer(osmUrl, { attribution: osmAttr });
+
+    // config map
+    let config = {
+        layers: [osmMap],
+        minZoom: 11,
+        maxZoom: 18,
+    };
+
+    // calling map
+    const map = L.map(document.getElementById("leaflet-map"), config).setView([lat, lng], zoom);
+
+    var baseLayers = {
+        "Map": osmMap
+    };
+
+    var airPollutionMarkers = L.layerGroup();
+    var layerControl=L.control.layers(baseLayers).addTo(map);
 
     setTimeout(function () {
         map.on("moveend", () => {
@@ -30,15 +42,16 @@ function createMap() {
                 "," +
                 bounds.getEast();
 
-            populateMarkers(map, bounds, true);
+            populateMarkers(map, layerControl, airPollutionMarkers, bounds, true);
         });
     }, 1000);
+
+    layerControl.addOverlay(airPollutionMarkers, "Air Pollution");
 
     return map;
 }
 
-function populateMarkers(map, bounds, isRefresh) {
-    // let bounds = "54.2,18.4,54.6,18.9"; // Hardcoded Gdańsk bounds
+function populateMarkers(map, layerControl, markers, bounds, isRefresh) {
     return fetch(
         "https://api.waqi.info/v2/map/bounds/?latlng=" +
         bounds +
@@ -65,7 +78,7 @@ function populateMarkers(map, bounds, isRefresh) {
                     zIndexOffset: station.aqi,
                     title: station.station.name,
                     icon: icon,
-                }).addTo(map);
+                }).addTo(markers);
 
                 marker.on("click", () => {
                     let popup = L.popup()
