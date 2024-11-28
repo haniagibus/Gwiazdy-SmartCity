@@ -61,6 +61,6 @@ fetch("/geojson-data/noise-pollution.geojson")
                 };
             }
         });
-        layerControl.addOverlay(noisePollution, "Parks");
+        layerControl.addOverlay(noisePollution, "Noise level");
         noisePollution.addTo(map);
     });
