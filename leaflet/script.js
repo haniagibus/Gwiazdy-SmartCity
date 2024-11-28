@@ -44,7 +44,7 @@ fetch("/geojson-data/green-terrains.geojson")
         return response.json();
     })
     .then(function (data) {
-        var noiseLayer = L.geoJSON(data, {
+        var parkLayer = L.geoJSON(data, {
             style: function (feature) {
                 return {
                     color: feature.properties.stroke,
@@ -57,6 +57,6 @@ fetch("/geojson-data/green-terrains.geojson")
         }).bindPopup(function (layer) {
             return layer.feature.properties.name;
         });
-        layerControl.addOverlay(noiseLayer, "Parks");
-        noiseLayer.addTo(map);
+        layerControl.addOverlay(parkLayer, "Parks");
+        parkLayer.addTo(map);
     });
