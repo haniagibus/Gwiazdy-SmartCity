@@ -40,7 +40,17 @@ var baseLayers = {
 };
 
 var overlayLayers = {
-    "Air Pollution": waqiLayer
-}
+    "Air Pollution": waqiLayer,
+};
 
-L.control.layers(baseLayers, overlayLayers).addTo(map);
+var layerControl=L.control.layers(baseLayers, overlayLayers).addTo(map);
+fetch(
+    "/geojson-data/parks.geojson"
+)
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (data) {
+        var noiseLayer = new L.GeoJSON(data);
+        layerControl.addOverlay(noiseLayer, "Parks");
+    });
