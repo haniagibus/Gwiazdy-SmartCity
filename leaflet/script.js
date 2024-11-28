@@ -45,13 +45,22 @@ var overlayLayers = {
 
 var layerControl=L.control.layers(baseLayers, overlayLayers).addTo(map);
 
-fetch(
-    "/geojson-data/green-terrains.geojson"
-)
+fetch("/geojson-data/green-terrains.geojson")
     .then(function (response) {
         return response.json();
     })
     .then(function (data) {
-        var noiseLayer = new L.GeoJSON(data);
-        layerControl.addOverlay(noiseLayer, "Green Terrains");
+        var noiseLayer = L.geoJSON(data, {
+            style: function (feature) {
+                return {
+                    color: feature.properties.stroke,
+                    weight: feature.properties['stroke-width'],
+                    opacity: feature.properties['stroke-opacity'],
+                    fillColor: feature.properties.fill,
+                    fillOpacity: feature.properties['fill-opacity']
+                };
+            }
+        });
+        layerControl.addOverlay(noiseLayer, "Parks");
+        noiseLayer.addTo(map);
     });
