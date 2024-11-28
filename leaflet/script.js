@@ -44,6 +44,7 @@ var overlayLayers = {
 };
 
 var layerControl=L.control.layers(baseLayers, overlayLayers).addTo(map);
+
 fetch(
     "/geojson-data/green-terrains.geojson"
 )
@@ -52,5 +53,5 @@ fetch(
     })
     .then(function (data) {
         var noiseLayer = new L.GeoJSON(data);
-        layerControl.addOverlay(noiseLayer, "Parks");
+        layerControl.addOverlay(noiseLayer, "Green Terrains");
     });
