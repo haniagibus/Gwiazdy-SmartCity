@@ -3,7 +3,7 @@
 created by: [Agnieszka Kulesz](https://github.com/agatherat), [Weronika Koterba](https://github.com/weronikakoterba), [Hania Gibus](https://github.com/haniagibus)
 
 ## Project description
-Leaflet map web application for assessing the ecological condition of the city - Gdańsk, and proposing solutions aimed at improving the quality of life of citizens. It enables users to visualize data such as air purity, availability of green areas and noise pollution.
+Web application for assessing the ecological condition of the city - Gdańsk, and proposing solutions aimed at improving the quality of life of citizens. It enables users to visualize data such as air purity, availability of green areas and noise pollution.
 
 ## Prerequisites
 1. Running Flask app on production server
