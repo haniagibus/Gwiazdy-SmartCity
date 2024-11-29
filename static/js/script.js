@@ -32,6 +32,8 @@ function createMap() {
     };
 
     var airPollutionMarkers = L.layerGroup();
+
+    L.Control.geocoder().addTo(map);
     var layerControl=L.control.layers(baseLayers).addTo(map);
 
     setTimeout(function () {
@@ -51,25 +53,6 @@ function createMap() {
     }, 1000);
 
     layerControl.addOverlay(airPollutionMarkers, "Air Pollution");
-
-    fetch("../static/geojson-data/noise-pollution.geojson")
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (data) {
-            var noisePollution = L.geoJSON(data, {
-                style: function (feature) {
-                    return {
-                        color: feature.properties.stroke,
-                        weight: feature.properties['stroke-width'],
-                        opacity: feature.properties['stroke-opacity'],
-                        fillColor: feature.properties.fill,
-                        fillOpacity: feature.properties['fill-opacity']
-                    };
-                }
-            });
-            layerControl.addOverlay(noisePollution, "Noise Pollution");
-        });
 
     fetch("../static/geojson-data/green-terrains.geojson")
         .then(function (response) {
@@ -97,6 +80,25 @@ function createMap() {
             });
 
             layerControl.addOverlay(greenTerrains, "Green Terrains");
+        });
+
+    fetch("../static/geojson-data/noise-pollution.geojson")
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            var noisePollution = L.geoJSON(data, {
+                style: function (feature) {
+                    return {
+                        color: feature.properties.stroke,
+                        weight: feature.properties['stroke-width'],
+                        opacity: feature.properties['stroke-opacity'],
+                        fillColor: feature.properties.fill,
+                        fillOpacity: feature.properties['fill-opacity']
+                    };
+                }
+            });
+            layerControl.addOverlay(noisePollution, "Noise Pollution");
         });
 
     return map;
