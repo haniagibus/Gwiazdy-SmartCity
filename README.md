@@ -16,3 +16,8 @@ users to visualize data such as air purity, availability of green areas and nois
 
 ## Dependencies
 1. Air Quality API: [World's Air Pollution](https://aqicn.org/api/)
+
+## Leaflet Plugins Used
+1. [leaflet.fullscreen](https://github.com/brunob/leaflet.fullscreen)
+2. [L.switchBasemap](https://github.com/clavijojuan/L.switchBasemap)
+3. [leaflet-control-geocoder](https://github.com/perliedman/leaflet-control-geocoder)
