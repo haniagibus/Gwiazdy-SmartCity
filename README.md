@@ -13,3 +13,6 @@ users to visualize data such as air purity, availability of green areas and nois
 ## How to run
 1. Open address in browser [http://172.16.177.107:8080/](http://172.16.177.107:8080/)
 4. Enjoy all the functionalities :)
+
+## Dependencies
+1. Air Quality API: [World's Air Pollution](https://aqicn.org/api/)
