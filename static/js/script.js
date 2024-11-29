@@ -23,6 +23,7 @@ function createMap() {
     // calling map
     const map = L.map(document.getElementById("leaflet-map"), config).setView([lat, lng], zoom);
 
+
     var baseLayers = {
         "Map": osmMap
     };
@@ -67,6 +68,39 @@ function createMap() {
             layerControl.addOverlay(noisePollution, "Noise level");
             noisePollution.addTo(map);
         });
+
+const legend = L.control({ position: 'bottomright' });
+legend.onAdd = function (map) {
+    const div = L.DomUtil.create('div', 'info legend');
+    div.innerHTML = `
+        <svg width="170" height="180" xmlns="http://www.w3.org/2000/svg">
+         <rect width="140" height="150" x="10" y="10" rx="20" ry="20" fill="white" opacity="0.83" />
+            <text x="20" y="40" font-size="14" font-family="Arial" fill="black">Noise Levels</text>
+            
+            <rect x="20" y="60" width="12" height="12" fill="#640d5f" />
+            <text x="40" y="70" font-size="12" font-family="Arial" fill="black">75,0-79,9 dB</text>
+
+            <rect x="20" y="90" width="12" height="12" fill="#da1629" />
+            <text x="40" y="100" font-size="12" font-family="Arial" fill="black">65,0-74,9 dB</text>
+
+            <rect x="20" y="120" width="12" height="12" fill="#eb5b00" />
+            <text x="40" y="130" font-size="12" font-family="Arial" fill="black">55,0-64,9 dB</text> 
+          </svg>
+    `;
+    return div;
+};
+
+    map.on('overlayadd', function (eventLayer) {
+        if (eventLayer.name === "Noise level") {
+            legend.addTo(map);
+        }
+    });
+
+    map.on('overlayremove', function (eventLayer) {
+        if (eventLayer.name === "Noise level") {
+            map.removeControl(legend);
+        }
+    });
 
 
     fetch("../static/geojson-data/green-terrains.geojson")
