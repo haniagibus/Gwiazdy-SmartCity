@@ -13,6 +13,8 @@ function createMap() {
     const osmAttr = `&copy; ${osmLink} Contributors`;
     const osmMap = L.tileLayer(osmUrl, { attribution: osmAttr });
 
+
+
     // config map
     let config = {
         layers: [osmMap],
@@ -27,15 +29,39 @@ function createMap() {
     // calling map
     const map = L.map(document.getElementById("leaflet-map"), config).setView([lat, lng], zoom);
 
+    var Stadia_AlidadeSmoothDark = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.{ext}', {
+        minZoom: 11,
+        maxZoom: 18,
+        attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        ext: 'png',
+        fullscreenControl: true,
+        fullscreenControlOptions: {
+            position: 'topleft'
+        }
+    });
 
     var baseLayers = {
-        "Map": osmMap
+        "Light mode": osmMap,
+        "Dark mode": Stadia_AlidadeSmoothDark
     };
+
+    new L.basemapsSwitcher([
+        {
+            layer: osmMap.addTo(map), //DEFAULT MAP
+            icon: './static/features/switch-basemap/assets/light_mode.png',
+            name: 'Light Mode'
+        },
+        {
+            layer: Stadia_AlidadeSmoothDark,
+            icon: './static/features/switch-basemap/assets/dark_mode.png',
+            name: 'Dark Mode'
+        }
+    ], { position: 'bottomleft' }).addTo(map);
 
     var airPollutionMarkers = L.layerGroup();
 
     L.Control.geocoder().addTo(map);
-    var layerControl=L.control.layers(baseLayers).addTo(map);
+    var layerControl=L.control.layers().addTo(map);
 
     setTimeout(function () {
         map.on("moveend", () => {
@@ -102,6 +128,24 @@ function createMap() {
             });
 
             layerControl.addOverlay(noisePollution, "Noise Pollution");
+        });
+
+    fetch("../static/geojson-data/critical-points.geojson")
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            var criticalPoints = L.geoJSON(data, {
+                style: function (feature) {
+                    return {
+                        color: feature.properties['marker-color']
+                    };
+                }
+            }).bindPopup(function(layer) {
+                return layer.feature.properties.name;
+            });
+
+            layerControl.addOverlay(criticalPoints, "Critical Points");
         });
 
     const legend = L.control({ position: 'bottomright' });
