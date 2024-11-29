@@ -138,7 +138,9 @@ function createMap() {
             var criticalPoints = L.geoJSON(data, {
                 style: function (feature) {
                     return {
-                        color: feature.properties['marker-color']
+                        'marker-color': feature.properties['marker-color'],
+                        'marker-size': feature.properties['marker-size'],
+                        'marker-symbol': feature.properties['marker-symbol']
                     };
                 }
             }).bindPopup(function(layer) {
