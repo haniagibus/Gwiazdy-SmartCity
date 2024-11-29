@@ -18,6 +18,10 @@ function createMap() {
         layers: [osmMap],
         minZoom: 11,
         maxZoom: 18,
+        fullscreenControl: true,
+        fullscreenControlOptions: {
+            position: 'topleft'
+        }
     };
 
     // calling map
@@ -29,6 +33,8 @@ function createMap() {
     };
 
     var airPollutionMarkers = L.layerGroup();
+
+    L.Control.geocoder().addTo(map);
     var layerControl=L.control.layers(baseLayers).addTo(map);
 
     setTimeout(function () {
@@ -49,12 +55,12 @@ function createMap() {
 
     layerControl.addOverlay(airPollutionMarkers, "Air Pollution");
 
-    fetch("../static/geojson-data/noise-pollution.geojson")
+    fetch("../static/geojson-data/green-terrains.geojson")
         .then(function (response) {
             return response.json();
         })
         .then(function (data) {
-            var noisePollution = L.geoJSON(data, {
+            var greenTerrains = L.geoJSON(data, {
                 style: function (feature) {
                     return {
                         color: feature.properties.stroke,
@@ -64,10 +70,16 @@ function createMap() {
                         fillOpacity: feature.properties['fill-opacity']
                     };
                 }
+            }).bindPopup(function(layer){
+                if (layer.feature.properties.name != null) {
+                    var media = layer.feature.properties.media
+                    image = "<img src='" + media + "' style=\"width:130px;height:70px;\">"
+                        + "<a target='_blank' href='" + media + "'></a>"
+
+                    return layer.feature.properties.name + '</br>' + image;
+                }
             });
-            layerControl.addOverlay(noisePollution, "Noise level");
-            noisePollution.addTo(map);
-        });
+
 
 const legend = L.control({ position: 'bottomright' });
 legend.onAdd = function (map) {
@@ -103,12 +115,16 @@ legend.onAdd = function (map) {
     });
 
 
-    fetch("../static/geojson-data/green-terrains.geojson")
+            layerControl.addOverlay(greenTerrains, "Green Terrains");
+        });
+
+
+    fetch("../static/geojson-data/noise-pollution.geojson")
         .then(function (response) {
             return response.json();
         })
         .then(function (data) {
-            var parkLayer = L.geoJSON(data, {
+            var noisePollution = L.geoJSON(data, {
                 style: function (feature) {
                     return {
                         color: feature.properties.stroke,
@@ -118,18 +134,8 @@ legend.onAdd = function (map) {
                         fillOpacity: feature.properties['fill-opacity']
                     };
                 }
-            }).bindPopup(function(layer){
-                if (layer.feature.properties.name != null) {
-                    var media = layer.feature.properties.media
-                    image = "<img src='" + media + "' style=\"width:130px;height:70px;\">"
-                        + "<a target='_blank' href='" + media + "'></a>"
-
-                    return layer.feature.properties.name + '</br>' + image;
-                }
             });
-
-            layerControl.addOverlay(parkLayer, "Green Terrains");
-            parkLayer.addTo(map);
+            layerControl.addOverlay(noisePollution, "Noise Pollution");
         });
 
     return map;
