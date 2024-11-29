@@ -108,8 +108,8 @@ function createMap() {
     legend.onAdd = function (map) {
         const div = L.DomUtil.create('div', 'info legend');
         div.innerHTML = `
-            <svg width="170" height="180" xmlns="http://www.w3.org/2000/svg">
-             <rect width="140" height="150" x="10" y="10" rx="20" ry="20" fill="white" opacity="0.83" />
+            <svg width="160" height="180" xmlns="http://www.w3.org/2000/svg">
+             <rect width="130" height="150" x="10" y="10" rx="20" ry="20" fill="white" opacity="0.83" />
                 <text x="20" y="40" font-size="14" font-family="Arial" fill="black">Noise Levels</text>
                 
                 <rect x="20" y="60" width="12" height="12" fill="#640d5f" />
