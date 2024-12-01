@@ -1,5 +1,7 @@
 # Gwiazdy-SmartCity
 
+Project created for [BEST Coding Marathon 2024](https://bestcodingmarathon.pl/) <br />
+Winner of **1st place**! 🏆 <br />
 created by: [Agnieszka Kulesz](https://github.com/agatherat), [Weronika Koterba](https://github.com/weronikakoterba), [Hania Gibus](https://github.com/haniagibus)
 
 ## Project description
@@ -7,7 +9,7 @@ Web application for assessing the ecological condition of the city - Gdańsk, an
 
 ## Prerequisites
 1. Running Flask app on production server
-2. User connected to the local network where Flask app is running _(for demonstration purposes WiFi SSID: CKS)_
+2. User connected to the local network where Flask app is running _(for demonstration purposes only - WiFi SSID: CKS)_
 
 ## How to run
 1. Open address in browser [http://172.16.177.107:8080/](http://172.16.177.107:8080/)
