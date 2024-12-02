@@ -8,12 +8,13 @@ created by: [Agnieszka Kulesz](https://github.com/agatherat), [Weronika Koterba]
 Web application for assessing the ecological condition of the city - Gdańsk, and proposing solutions aimed at improving the quality of life of citizens. It enables users to visualize data such as air purity, availability of green areas and noise pollution.
 
 ## Prerequisites
-1. Running Flask app on production server
-2. User connected to the local network where Flask app is running _(for demonstration purposes only - WiFi SSID: CKS)_
+1. Clone repository: `git clone https://github.com/haniagibus/Gwiazdy-SmartCity.git`
+2. Run Flask app on production server
 
 ## How to run
-1. Open address in browser [http://172.16.177.107:8080/](http://172.16.177.107:8080/)
-4. Enjoy all of the features :)
+1. Open app in browser http://localhost:8080
+2. To access the app from **all devices connected to the same local nework** open the address http://host.device.ip:8080
+3. Enjoy all of the features :)
 
 ## Dependencies
 1. Maps library: [Leaflet](https://leafletjs.com/)
